@@ -1,4 +1,6 @@
-export async function GET({ url }) {
+import type { RequestHandler } from './$types';
+
+export const GET: RequestHandler = async ({ url }) => {
 	const name = url.searchParams.get('name');
 
 	if (!name) {
@@ -6,11 +8,11 @@ export async function GET({ url }) {
 	}
 
 	const res = await fetch(`https://api.agify.io?name=${name}`);
-	const data = await res.json();
+	const data: { name: string; age: number } = await res.json();
 
 	return new Response(JSON.stringify(data), {
 		headers: {
 			'Content-Type': 'application/json'
 		}
 	});
-}
+};
